@@ -1,4 +1,10 @@
 package com.example.connect.user.domain;
+import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public class UserRepository {
+import java.util.Optional;
+public interface UserRepository extends JpaRepository<User, Long>{
+    boolean existsByEmail(String email);
+    boolean existsByUsername(String username);
+    Optional<User> findByUsername(String username);
 }
