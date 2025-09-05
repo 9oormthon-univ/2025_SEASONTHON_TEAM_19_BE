@@ -1,0 +1,10 @@
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+  datasource:
+    url: jdbc:mysql://connectdb.cpgqkmy0sm0o.ap-northeast-2.rds.amazonaws.com:3306/connectserver
+    username: root
+    password: root1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
