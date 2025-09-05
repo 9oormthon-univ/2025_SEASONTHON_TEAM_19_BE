@@ -14,6 +14,7 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtProvider jwt; // <-- 스프링이 주입
 
     @Transactional
     public User signup(String email, String username, String rawPassword) {
@@ -29,7 +30,7 @@ public class AuthService {
         if (!passwordEncoder.matches(rawPassword, user.getPasswordHash())) {
             throw new IllegalArgumentException("INVALID_CREDENTIALS");
         }
-        return JwtProvider.generate(user.getId(), user.getUsername()); // <- 정적 호출
+        return jwt.generate(user.getId(), user.getUsername());
     }
 
     public boolean emailAvailable(String email)     { return !userRepository.existsByEmail(email); }

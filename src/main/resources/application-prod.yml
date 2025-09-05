@@ -8,9 +8,16 @@ spring:
     username: root
     password: 12341234
     driver-class-name: com.mysql.cj.jdbc.Driver
+
   jpa:
     hibernate:
       ddl-auto: update   # 첫 세팅은 update, 나중엔 validate 권장
     open-in-view: false
+
 server:
   port: 8080
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:ChangeMeToALongRandomSecret_AtLeast32Chars_xxxxxxxxxxx}
+    expiry-seconds: 3600
