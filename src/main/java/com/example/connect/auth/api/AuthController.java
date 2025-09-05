@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -47,6 +48,9 @@ public class AuthController {
     @GetMapping("/me")
     public MeRes me(@RequestHeader(value = "Authorization", required = false) String auth) {
         String token = (auth != null && auth.startsWith("Bearer ")) ? auth.substring(7) : null;
+        if (token == null || !jwt.validate(token)) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        }
         Long userId = jwt.getUserId(token);
         String username = jwt.getUsername(token);
         return new MeRes(userId, username);

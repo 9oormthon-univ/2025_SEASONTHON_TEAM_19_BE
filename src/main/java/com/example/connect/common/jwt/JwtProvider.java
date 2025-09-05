@@ -1,40 +1,67 @@
 package com.example.connect.common.jwt;
 
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
+import java.security.Key;
 import java.time.Instant;
 import java.util.Date;
 
 @Component
 public class JwtProvider {
 
-    private final SecretKey key;
-    private final long expirySeconds;
+
+    private final Key KEY;
+    private final long EXPIRY_SECONDS;
 
     public JwtProvider(
             @Value("${app.jwt.secret}") String secret,
             @Value("${app.jwt.expiry-seconds:3600}") long expirySeconds
     ) {
-        if (secret == null || secret.length() < 32) {
-            throw new IllegalStateException("app.jwt.secret must be at least 32 characters.");
-        }
-        this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
-        this.expirySeconds = expirySeconds;
+        this.KEY = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+        this.EXPIRY_SECONDS = expirySeconds;
     }
 
+
+    /** 토큰 생성 */
     public String generate(Long userId, String username) {
         Instant now = Instant.now();
         return Jwts.builder()
-                .subject(String.valueOf(userId))
-                .claim("username", username)
-                .issuedAt(Date.from(now))
-                .expiration(Date.from(now.plusSeconds(expirySeconds)))
-                .signWith(key)
+                .setSubject(String.valueOf(userId))              // userId는 subject 로
+                .claim("username", username)                     // username 는 claim 으로
+                .setIssuedAt(Date.from(now))
+                .setExpiration(Date.from(now.plusSeconds(EXPIRY_SECONDS)))
+                .signWith(KEY, SignatureAlgorithm.HS256)         // jjwt 0.11.5
                 .compact();
+    }
+
+    /** ====== 컨트롤러에서 필요한 메서드들 ====== */
+    public Long getUserId(String token) {
+        return Long.valueOf(parse(token).getSubject());
+    }
+
+    public String getUsername(String token) {
+        return parse(token).get("username", String.class);
+    }
+
+    public boolean validate(String token) {
+        try {
+            parse(token);
+            return true;
+        } catch (JwtException | IllegalArgumentException e) {
+            return false;
+        }
+    }
+
+    /** 내부 공용 파서 */
+    private Claims parse(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(KEY)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 }
