@@ -1,8 +1,8 @@
 spring:
   datasource:
-    username: root
-    password: 0000
-    url: jdbc:mysql://localhost:3306/synergy
+    url: jdbc:mysql://localhost:3306/synergy?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
+    username: synergy
+    password: pw1234!
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -26,3 +26,6 @@ logging:
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
     org.springframework.jdbc.core: DEBUG
+app:
+  jwt:
+    secret: "this_is_a_demo_secret_for_local_dev_change_me_please_1234567890abcd"
