@@ -1,6 +1,7 @@
 package com.example.connect.mentor.application;
 
 
+import com.example.connect.mentor.api.dto.MentorDetailResponse;
 import com.example.connect.mentor.api.dto.MentorSummaryResponse;
 import com.example.connect.mentor.model.CategoryCode;
 import com.example.connect.user.domain.User;
@@ -8,8 +9,10 @@ import com.example.connect.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -37,6 +40,14 @@ public class MentorQueryService {
             }
         }
         return page.map(MentorSummaryResponse::from);
+    }
+
+    // [추가] 멘토 상세 조회
+    public MentorDetailResponse getMentorDetail(Long mentorId) {
+        var user = userRepository.findByIdAndMentorTrue(mentorId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "존재하지 않거나 멘토가 아닙니다."));
+        return MentorDetailResponse.from(user);
     }
 
 

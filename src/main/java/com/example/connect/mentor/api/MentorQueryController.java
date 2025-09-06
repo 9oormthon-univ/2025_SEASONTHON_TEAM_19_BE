@@ -1,6 +1,7 @@
 package com.example.connect.mentor.api;
 
 import com.example.connect.mentor.api.dto.CategoryItem;
+import com.example.connect.mentor.api.dto.MentorDetailResponse;
 import com.example.connect.mentor.api.dto.MentorSummaryResponse;
 import com.example.connect.mentor.application.MentorQueryService;
 import com.example.connect.mentor.model.CategoryCode;
@@ -8,10 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -49,4 +47,10 @@ public class MentorQueryController {
                 .map(cc -> new CategoryItem(cc.name(), cc.getDisplayName()))
                 .toList();
     }
+
+    @GetMapping("/{mentorId}")
+    public MentorDetailResponse detail(@PathVariable Long mentorId) { // [추가]
+        return mentorQueryService.getMentorDetail(mentorId);
+    }
+
 }
