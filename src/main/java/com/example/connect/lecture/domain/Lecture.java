@@ -20,6 +20,25 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor(access = PROTECTED)
 public class Lecture {
 
+    // ---------- 여기부터 추가 ----------
+    @ElementCollection(targetClass = LectureCategory.class)                      // [추가]
+    @CollectionTable(name = "lecture_category_map",                              // [추가]
+            joinColumns = @JoinColumn(name = "lecture_id"),
+            indexes = {
+                    @Index(name="idx_lecture_category_map_lecture", columnList = "lecture_id"),
+                    @Index(name="idx_lecture_category_map_code",    columnList = "category_code")
+            })
+    @Column(name = "category_code", nullable = false, length = 20)               // [추가]
+    @Enumerated(EnumType.STRING)                                                 // [추가]
+    private java.util.Set<LectureCategory> categories = new java.util.HashSet<>(); // [추가]
+
+    public void setCategories(java.util.Set<LectureCategory> newCats) {          // [추가]
+        this.categories.clear();
+        if (newCats != null) this.categories.addAll(newCats);
+    }
+    // ---------- 추가 끝 ----------
+
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

@@ -1,6 +1,7 @@
 package com.example.connect.lecture.api;
 
 import com.example.connect.lecture.api.dto.LectureCardRes;
+import com.example.connect.lecture.api.dto.LectureCreateReq;
 import com.example.connect.lecture.application.LectureService;
 import com.example.connect.lecture.domain.LectureCategory;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
+import com.example.connect.lecture.api.dto.LectureCreateRes;
 
 @RestController
 @RequestMapping("/api/lectures")
@@ -29,4 +31,12 @@ public class LectureApiController {
     public LectureCardRes detail(@PathVariable Long id) {
         return lectureService.getLectureCard(id);
     }
+
+    // ---------- 여기부터 추가 ----------
+    @PostMapping
+    @ResponseStatus(org.springframework.http.HttpStatus.CREATED)
+    public LectureCreateRes create(@jakarta.validation.Valid @RequestBody LectureCreateReq req) {
+        return lectureService.create(req);
+    }
+    // ---------- 추가 끝 ----------
 }
