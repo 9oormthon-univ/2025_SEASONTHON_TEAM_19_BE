@@ -19,5 +19,5 @@ server:
 
 app:
   jwt:
-    secret: ${JWT_SECRET:ChangeMeToALongRandomSecret_AtLeast32Chars_xxxxxxxxxxx}
+    secret: "please-change-to-a-random-very-long-secret-at-least-32-bytes"
     expiry-seconds: 3600

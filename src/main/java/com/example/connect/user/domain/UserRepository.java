@@ -1,4 +1,4 @@
-package com.example.connect.auth.domain;
+package com.example.connect.user.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;

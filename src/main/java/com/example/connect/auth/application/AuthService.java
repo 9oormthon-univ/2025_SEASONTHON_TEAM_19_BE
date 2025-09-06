@@ -1,7 +1,7 @@
 package com.example.connect.auth.application;
 
-import com.example.connect.auth.domain.User;
-import com.example.connect.auth.domain.UserRepository;
+import com.example.connect.user.domain.User;
+import com.example.connect.user.domain.UserRepository;
 import com.example.connect.common.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

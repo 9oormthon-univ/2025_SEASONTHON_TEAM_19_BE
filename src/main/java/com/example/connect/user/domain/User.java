@@ -1,4 +1,4 @@
-package com.example.connect.auth.domain;
+package com.example.connect.user.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
