@@ -22,21 +22,29 @@ public class Reservation {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = LAZY) @JoinColumn(name = "lecture_id", nullable = false)
+    /** 강연 */
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "lecture_id", nullable = false)
     private Lecture lecture;
 
-    @ManyToOne(fetch = LAZY) @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    /** 예약자(로그인 사용자) ID - User 테이블 FK는 아니고 값만 저장 */
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
 
-    @Column(length = 20) // 예약 화면의 휴대폰 번호 등
+    /** 예약자 표시용 */
+    @Column(nullable = false, length = 50)
+    private String name;
+
+    @Column(nullable = false, length = 20)
     private String phone;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    public Reservation(Lecture lecture, User user, String phone) {
+    public Reservation(Lecture lecture, Long userId, String name, String phone) {
         this.lecture = lecture;
-        this.user = user;
+        this.userId = userId;
+        this.name = name;
         this.phone = phone;
     }
 }

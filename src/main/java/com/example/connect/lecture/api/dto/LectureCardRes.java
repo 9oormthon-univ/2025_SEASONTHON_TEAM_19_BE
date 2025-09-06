@@ -1,4 +1,4 @@
-package com.example.connect.lecture.api;
+package com.example.connect.lecture.api.dto;
 
 import com.example.connect.lecture.domain.Lecture;
 import com.fasterxml.jackson.annotation.JsonFormat;
