@@ -53,6 +53,9 @@ public class User {
     @Column(columnDefinition = "TEXT", nullable = true)     // [추가3]
     private String introduction;                            // [추가3]
 
+    @Column(name = "mentoring_count", nullable = false, columnDefinition = "INT DEFAULT 0") // [추가]
+    private int mentoringCount = 0; // [추가7]
+
 
 
     @Builder
@@ -88,6 +91,11 @@ public class User {
         this.education = education;         // [추가3]
         this.career = career;               // [추가3]
         this.introduction = introduction;   // [추가3]
+    }
+
+    // [추가7] 멘토링 신청 누적 +1
+    public void increaseMentoringCount() {
+        this.mentoringCount += 1;
     }
 
 
