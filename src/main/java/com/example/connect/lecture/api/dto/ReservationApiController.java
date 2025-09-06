@@ -1,5 +1,6 @@
 package com.example.connect.lecture.api;
 
+import com.example.connect.lecture.api.dto.MyLectureSimpleRes;
 import com.example.connect.lecture.api.dto.ReservationReq;
 import com.example.connect.lecture.api.dto.ReservationRes;
 import com.example.connect.lecture.application.ReservationService;
@@ -43,5 +44,16 @@ public class ReservationApiController {
         Long userId = jwt.getUserId(token);
         return reservationService.getMyReservations(userId, pageable)
                 .map(r -> new ReservationRes(r.getId(), r.getLecture().getId(), "ok"));
+    }
+
+    /** 내가 예약한 강의 — (제목, 내용, 카테고리만) */
+    @GetMapping("/api/my/lectures")
+    public Page<MyLectureSimpleRes> myLecturesSimple(
+            @RequestHeader("Authorization") String auth,
+            @PageableDefault(size = 20) Pageable pageable
+    ) {
+        String token = (auth != null && auth.startsWith("Bearer ")) ? auth.substring(7) : auth;
+        Long userId = jwt.getUserId(token);
+        return reservationService.getMyReservedLectureSimples(userId, pageable);
     }
 }

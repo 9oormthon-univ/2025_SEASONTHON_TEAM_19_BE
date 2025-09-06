@@ -7,4 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MentoringApplicationRepository extends JpaRepository<MentoringApplication, Long> {
     Page<MentoringApplication> findByMentor(User mentor, Pageable pageable);
+    Page<MentoringApplication> findByApplicantUserId(Long applicantUserId, Pageable pageable); // ★ 추가
 }
