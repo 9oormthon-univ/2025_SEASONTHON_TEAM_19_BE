@@ -13,14 +13,15 @@ public record LectureCardRes(
         int capacity,
         long reserved,
         int remain,
-        String thumbnailUrl
+        String thumbnailUrl,
+        String content      // [추가] 목록/상세 응답에 내용 포함
 ) {
     public static LectureCardRes from(Lecture l, long reserved) {
         int remain = Math.max(0, l.getCapacity() - (int) reserved);
         return new LectureCardRes(
                 l.getId(), l.getTitle(), l.getCategory().name(),
                 l.getDate(), l.getLocation(), l.getCapacity(),
-                reserved, remain, l.getThumbnailUrl()
+                reserved, remain, l.getThumbnailUrl(), l.getContent() // [추가] 매핑
         );
     }
 }

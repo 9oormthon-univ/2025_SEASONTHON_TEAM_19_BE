@@ -1,5 +1,6 @@
 package com.example.connect.lecture.application;
 
+import com.example.connect.lecture.api.dto.MyLectureSimpleRes;
 import com.example.connect.lecture.api.dto.ReservationReq;
 import com.example.connect.lecture.api.dto.ReservationRes;
 import com.example.connect.lecture.domain.*;
@@ -42,5 +43,11 @@ public class ReservationService {
     @Transactional(readOnly = true)
     public Page<Reservation> getMyReservations(Long userId, Pageable pageable) {
         return reservationRepository.findByUserId(userId, pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<MyLectureSimpleRes> getMyReservedLectureSimples(Long userId, Pageable pageable) {
+        return reservationRepository.findByUserId(userId, pageable)
+                .map(r -> MyLectureSimpleRes.from(r.getLecture()));
     }
 }

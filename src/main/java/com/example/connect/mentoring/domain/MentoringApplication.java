@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "mentoring_application",
         indexes = {
                 @Index(name="idx_ma_mentor_id", columnList = "mentor_id"),
+                @Index(name="idx_ma_applicant_user_id", columnList = "applicant_user_id"), // 추가0
                 @Index(name="idx_ma_created_at", columnList = "created_at")
         })
 public class MentoringApplication {
@@ -25,6 +26,11 @@ public class MentoringApplication {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "mentor_id", nullable = false)
     private User mentor;
+
+    // ★ 신청자 사용자 ID(관계X, 컬럼만)
+    @Column(name = "applicant_user_id", nullable = false)   // ★ 추가0
+    private Long applicantUserId;                           // ★ 추가0
+
 
     @Column(nullable = false, length = 60)
     private String applicantName;
@@ -42,9 +48,10 @@ public class MentoringApplication {
     private String createdAt;  // [변경:String] 서버가 세팅하는 생성시각(문자열)
 
     @Builder
-    private MentoringApplication(User mentor, String applicantName, String phone,
+    private MentoringApplication(User mentor, Long applicantUserId, String applicantName, String phone,
                                  String scheduledAt, String content, String createdAt) { // [변경:String]
         this.mentor = mentor;
+        this.applicantUserId = applicantUserId; // ★
         this.applicantName = applicantName;
         this.phone = phone;
         this.scheduledAt = scheduledAt;
