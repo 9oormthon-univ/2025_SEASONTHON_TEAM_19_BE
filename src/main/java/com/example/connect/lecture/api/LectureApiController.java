@@ -27,7 +27,8 @@ public class LectureApiController {
         return lectureService.getLectureCards(cat, pageable);
     }
 
-    // 잘못된 카테고리 문자열을 400으로 처리하고 싶다면 아래처럼:
-    // LectureCategory.from(category).orElseThrow(() ->
-    //         new ResponseStatusException(HttpStatus.BAD_REQUEST, "invalid category"));
+    @GetMapping("/{id}")
+    public LectureCardRes detail(@PathVariable Long id) {
+        return lectureService.getLectureCard(id);
+    }
 }
